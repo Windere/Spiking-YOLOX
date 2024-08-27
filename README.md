@@ -1,255 +1,154 @@
-<div align="center"><img src="assets/logo.png" width="350"></div>
-<img src="assets/demo.png" >
-
-## Introduction
-YOLOX is an anchor-free version of YOLO, with a simpler design but better performance! It aims to bridge the gap between research and industrial communities.
-For more details, please refer to our [report on Arxiv](https://arxiv.org/abs/2107.08430).
-
-This repo is an implementation of PyTorch version YOLOX, there is also a [MegEngine implementation](https://github.com/MegEngine/YOLOX).
-
-<img src="assets/git_fig.png" width="1000" >
-
-## Updates!!
-* 【2023/02/28】 We support assignment visualization tool, see doc [here](./docs/assignment_visualization.md).
-* 【2022/04/14】 We support jit compile op.
-* 【2021/08/19】 We optimize the training process with **2x** faster training and **~1%** higher performance! See [notes](docs/updates_note.md) for more details.
-* 【2021/08/05】 We release [MegEngine version YOLOX](https://github.com/MegEngine/YOLOX).
-* 【2021/07/28】 We fix the fatal error of [memory leak](https://github.com/Megvii-BaseDetection/YOLOX/issues/103)
-* 【2021/07/26】 We now support [MegEngine](https://github.com/Megvii-BaseDetection/YOLOX/tree/main/demo/MegEngine) deployment.
-* 【2021/07/20】 We have released our technical report on [Arxiv](https://arxiv.org/abs/2107.08430).
-
-## Coming soon
-- [ ] YOLOX-P6 and larger model.
-- [ ] Objects365 pretrain.
-- [ ] Transformer modules.
-- [ ] More features in need.
-
-## Benchmark
-
-#### Standard Models.
-
-|Model |size |mAP<sup>val<br>0.5:0.95 |mAP<sup>test<br>0.5:0.95 | Speed V100<br>(ms) | Params<br>(M) |FLOPs<br>(G)| weights |
-| ------        |:---: | :---:    | :---:       |:---:     |:---:  | :---: | :----: |
-|[YOLOX-s](./exps/default/yolox_s.py)    |640  |40.5 |40.5      |9.8      |9.0 | 26.8 | [github](https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_s.pth) |
-|[YOLOX-m](./exps/default/yolox_m.py)    |640  |46.9 |47.2      |12.3     |25.3 |73.8| [github](https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_m.pth) |
-|[YOLOX-l](./exps/default/yolox_l.py)    |640  |49.7 |50.1      |14.5     |54.2| 155.6 | [github](https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_l.pth) |
-|[YOLOX-x](./exps/default/yolox_x.py)   |640   |51.1 |**51.5**  | 17.3    |99.1 |281.9 | [github](https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_x.pth) |
-|[YOLOX-Darknet53](./exps/default/yolov3.py)   |640  | 47.7 | 48.0 | 11.1 |63.7 | 185.3 | [github](https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_darknet.pth) |
-
-<details>
-<summary>Legacy models</summary>
-
-|Model |size |mAP<sup>test<br>0.5:0.95 | Speed V100<br>(ms) | Params<br>(M) |FLOPs<br>(G)| weights |
-| ------        |:---: | :---:       |:---:     |:---:  | :---: | :----: |
-|[YOLOX-s](./exps/default/yolox_s.py)    |640  |39.6      |9.8     |9.0 | 26.8 | [onedrive](https://megvii-my.sharepoint.cn/:u:/g/personal/gezheng_megvii_com/EW62gmO2vnNNs5npxjzunVwB9p307qqygaCkXdTO88BLUg?e=NMTQYw)/[github](https://github.com/Megvii-BaseDetection/storage/releases/download/0.0.1/yolox_s.pth) |
-|[YOLOX-m](./exps/default/yolox_m.py)    |640  |46.4      |12.3     |25.3 |73.8| [onedrive](https://megvii-my.sharepoint.cn/:u:/g/personal/gezheng_megvii_com/ERMTP7VFqrVBrXKMU7Vl4TcBQs0SUeCT7kvc-JdIbej4tQ?e=1MDo9y)/[github](https://github.com/Megvii-BaseDetection/storage/releases/download/0.0.1/yolox_m.pth) |
-|[YOLOX-l](./exps/default/yolox_l.py)    |640  |50.0  |14.5 |54.2| 155.6 | [onedrive](https://megvii-my.sharepoint.cn/:u:/g/personal/gezheng_megvii_com/EWA8w_IEOzBKvuueBqfaZh0BeoG5sVzR-XYbOJO4YlOkRw?e=wHWOBE)/[github](https://github.com/Megvii-BaseDetection/storage/releases/download/0.0.1/yolox_l.pth) |
-|[YOLOX-x](./exps/default/yolox_x.py)   |640  |**51.2**      | 17.3 |99.1 |281.9 | [onedrive](https://megvii-my.sharepoint.cn/:u:/g/personal/gezheng_megvii_com/EdgVPHBziOVBtGAXHfeHI5kBza0q9yyueMGdT0wXZfI1rQ?e=tABO5u)/[github](https://github.com/Megvii-BaseDetection/storage/releases/download/0.0.1/yolox_x.pth) |
-|[YOLOX-Darknet53](./exps/default/yolov3.py)   |640  | 47.4      | 11.1 |63.7 | 185.3 | [onedrive](https://megvii-my.sharepoint.cn/:u:/g/personal/gezheng_megvii_com/EZ-MV1r_fMFPkPrNjvbJEMoBLOLAnXH-XKEB77w8LhXL6Q?e=mf6wOc)/[github](https://github.com/Megvii-BaseDetection/storage/releases/download/0.0.1/yolox_darknet53.pth) |
-
-</details>
-
-#### Light Models.
-
-|Model |size |mAP<sup>val<br>0.5:0.95 | Params<br>(M) |FLOPs<br>(G)| weights |
-| ------        |:---:  |  :---:       |:---:     |:---:  | :---: |
-|[YOLOX-Nano](./exps/default/yolox_nano.py) |416  |25.8  | 0.91 |1.08 | [github](https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_nano.pth) |
-|[YOLOX-Tiny](./exps/default/yolox_tiny.py) |416  |32.8 | 5.06 |6.45 | [github](https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_tiny.pth) |
+# EAS-SNN: End-to-End Adaptive Sampling and Representation for Event-based Detection with Recurrent Spiking Neural Networks
 
 
-<details>
-<summary>Legacy models</summary>
+This repository hosts the codebase, which is an adaptation of <a href="https://github.com/Windere/EAS-SNN" target="_blank">the original PyTorch implementation</a> from the ECCV 2024 paper, tailored specifically for static dataset detection tasks. The modifications focus on optimizing the framework for improved performance and accuracy when working with non-sequential, static datasets.
 
-|Model |size |mAP<sup>val<br>0.5:0.95 | Params<br>(M) |FLOPs<br>(G)| weights |
-| ------        |:---:  |  :---:       |:---:     |:---:  | :---: |
-|[YOLOX-Nano](./exps/default/yolox_nano.py) |416  |25.3  | 0.91 |1.08 | [github](https://github.com/Megvii-BaseDetection/storage/releases/download/0.0.1/yolox_nano.pth) |
-|[YOLOX-Tiny](./exps/default/yolox_tiny.py) |416  |32.8 | 5.06 |6.45 | [github](https://github.com/Megvii-BaseDetection/storage/releases/download/0.0.1/yolox_tiny_32dot8.pth) |
+[//]: # (This repository contains code modified from <a href="https://github.com/Windere/EAS-SNN" target="_blank"> the Pytorch implementation of the ECCV 2024 paper</a> for detection on static datasets.)
 
-</details>
 
-## Quick Start
+ ## Summary:
+In this study, we discover that the neural dynamics of spiking neurons align closely with the behavior of an ideal temporal event sampler. Motivated by this, we propose a novel adaptive sampling module that leverages recurrent convolutional SNNs enhanced with temporal memory, facilitating a fully end-to-end learnable framework for event-based detection. Additionally, we introduce Residual Potential Dropout (RPD) and Spike-Aware Training (SAT) to regulate potential distribution and address performance degradation encountered in spike-based sampling modules.  
 
-<details>
-<summary>Installation</summary>
 
-Step1. Install YOLOX from source.
-```shell
-git clone git@github.com:Megvii-BaseDetection/YOLOX.git
-cd YOLOX
-pip3 install -v -e .  # or  python3 setup.py develop
-```
+## Installation
+The main dependencies are listed below:
 
-</details>
+| Dependency     | Version |
+|----------------|---------|
+| spikingjelly   | 0.0.0.0.14 |
+| h5py           | 3.8.0   |
+| torchvision    | 0.16.1  |
+| thop           | 0.1.1   |
+| pytorch        | 2.1.1   |
+| pycocotools    | 2.0.6   |
+| opencv         | 4.7.0   |
+| numpy          | 1.26.0  |
+| einops         | 0.8.0   |
+|python     |   3.10.9|
 
-<details>
-<summary>Demo</summary>
-
-Step1. Download a pretrained model from the benchmark table.
-
-Step2. Use either -n or -f to specify your detector's config. For example:
-
-```shell
-python tools/demo.py image -n yolox-s -c /path/to/your/yolox_s.pth --path assets/dog.jpg --conf 0.25 --nms 0.45 --tsize 640 --save_result --device [cpu/gpu]
+You can try to install the required packages by running:
+```bash 
+conda env create -f conda-env.yml
 ```
 or
-```shell
-python tools/demo.py image -f exps/default/yolox_s.py -c /path/to/your/yolox_s.pth --path assets/dog.jpg --conf 0.25 --nms 0.45 --tsize 640 --save_result --device [cpu/gpu]
-```
-Demo for video:
-```shell
-python tools/demo.py video -n yolox-s -c /path/to/your/yolox_s.pth --path /path/to/your/video --conf 0.25 --nms 0.45 --tsize 640 --save_result --device [cpu/gpu]
+```bash
+pip install -r pip-requirements.txt
 ```
 
+## Required Data
+1. The raw GEN-1 dataset can be downloaded from [here](https://www.prophesee.ai/2020/01/24/prophesee-gen1-automotive-detection-dataset/)
 
-</details>
+2. The raw 1Mpx dataset can be downloaded from [here](https://www.prophesee.ai/2020/11/24/automotive-megapixel-event-based-dataset/)
 
-<details>
-<summary>Reproduce our results on COCO</summary>
+3. The preprocessed 1Mpx dataset by RVT can be downloaded from [here](https://download.ifi.uzh.ch/rpg/RVT/datasets/preprocessed/gen4.tar)
 
-Step1. Prepare COCO dataset
+4. The raw N-Caltech 101 dataset can be downloaded from [here](https://www.garrickorchard.com/datasets/n-caltech101)
+
+After unzipping the dataset, you should have the following directory structure:
 ```shell
-cd <YOLOX_HOME>
-ln -s /path/to/your/COCO ./datasets/COCO
-```
+    # The Splitted N-Caltech101 Dataset
+    ├── N-Caltech
+    │   ├── Caltech101
+    │   ├── Caltech101_annotations
+    │   ├── test.txt
+    │   ├── train.txt
+    │   └── val.txt
+    
+    #  The raw 1Mpx/Gen1 dataset
+    ├── Root Directory
+    │   ├── Raw Splitted Dataset
+    │   │   ├── train
+    │   │   │   ├── EVENT_STREAM_NAME_td.dat
+    │   │   │   ├── EVENT_STREAM_NAME_bbox.npy
+    │   │   │   └── ...
+    │   │   ├── val
+    │   │   │   ├── EVENT_STREAM_NAME_td.dat
+    │   │   │   ├── EVENT_STREAM_NAME_bbox.npy
+    │   │   │   └── ...
+    │   │   ├── test
+    │   │   │   ├── EVENT_STREAM_NAME_td.dat
+    │   │   │   ├── EVENT_STREAM_NAME_bbox.npy
+    │   │   │   └── ...
+    
+    # The processed 1Mpx Dataset
+    ├── Root Directory
+    │   ├── train
+    │   │   ├── EVENT_STREAM_NAME
+    │   │   │   ├── event_representations_v2
+    │   │   │   │   ├── stacked_histogram_dt=50_nbins=10   
+    │   │   │   │   │   ├── event_representations_ds2_nearest.h5  
+    │   │   │   │   │   ├── objframe_idx_2_repr_idx.npy 
+    │   │   │   │   │   ├── timestamps_us.npy 
+    │   │   │   ├── labels_v2
+    │   │   │   │   ├── labels.npz   
+    │   │   │   │   ├── timestamps_us.npy 
+    │   │   │   │   ├──  ...
 
-Step2. Reproduce our results on COCO by specifying -n:
+ ```
 
-```shell
-python -m yolox.tools.train -n yolox-s -d 8 -b 64 --fp16 -o [--cache]
-                               yolox-m
-                               yolox-l
-                               yolox-x
-```
-* -d: number of gpu devices
-* -b: total batch size, the recommended number for -b is num-gpu * 8
-* --fp16: mixed precision training
-* --cache: caching imgs into RAM to accelarate training, which need large system RAM.
+## Usage
+1. First, install all required packages and cd to the 'tools' directory.
+2. Run the following command to train an EAS-SNN model on the GEN-1 dataset:
+   * Commands for training spiking YOLOX-S (non-spiking FPN + non-spiking HEAD) on the GEN-1 dataset
+       ```bash
+       CUDA_VISIBLE_DEVICES=0,1,2,3  python train_event.py -n e-yolox-s -d 4 -b 64 \
+       -expn exp_name  max_epoch 30 data_num_workers 4 T 3 eval_interval 10 embedding arsnn \ 
+      basic_lr_per_img 0.000015625 seed 80 data_name gen1 data_dir /data2/wzm/dataset/GEN1/raw/ \
+     num_classes 2 scheduler fixed spike_attach True  thresh 1 readout sum embedding_depth 2 \
+      embedding_ksize 5 write_zero True  use_spike True spike_fn atan
+       ```
 
+   * Commands for training spiking YOLOX-S (spiking FPN + HEAD) on the GEN-1 dataset
+       ```bash
+       CUDA_VISIBLE_DEVICES=0,1,2,3  python train_event.py -n e-yolox-s -d 4 -b 58 \
+      -expn exp_name  max_epoch 30 data_num_workers 4 T 3 eval_interval 10 embedding arsnn \
+      basic_lr_per_img 0.00001724 seed 80 data_name gen1 data_dir /data2/wzm/dataset/GEN1/raw/ \
+      num_classes 2 scheduler fixed spike_attach True  thresh 1 readout sum embedding_depth 2 \
+      embedding_ksize 5 write_zero True  use_spike full_spike spike_fn atan
+       ```
 
+   * Commands for training spiking YOLOX-S (spiking FPN + spiking HEAD) on the GEN-1 dataset
+       ```bash
+       CUDA_VISIBLE_DEVICES=0,1,2,3  python train_event.py -n e-yolox-s -d 4 -b 54  -expn exp_name \
+      max_epoch 30 data_num_workers 4 T 3 eval_interval 10 embedding arsnn basic_lr_per_img 0.00001851 \ 
+     seed 80 data_name gen1 data_dir /data2/wzm/dataset/GEN1/raw/ num_classes 2 scheduler fixed spike_attach True \
+      thresh 1 readout sum embedding_depth 2 embedding_ksize 5 write_zero True  use_spike full_spike_v2 spike_fn atan
+       ```
+3. Run the following command to train an EAS-SNN model on the N-Caltech dataset:
+    ```bash
+    CUDA_VISIBLE_DEVICES=0,1,2,3  python train_event.py -n e-yolox-m -d 4 -b 32 -expn exp_name \ 
+   max_epoch 60 data_num_workers 2 eval_interval 10 embedding arsnn basic_lr_per_img  0.000009375 \
+   seed 80 data_dir /data2/wzm/dataset/N-Caltech/ no_aug_epochs 0 Tm 4 T 3 scheduler fixed \
+    spike_attach True  write_zero True readout sum use_spike full_spike_v2  window 0  spike_fn atan alpha 1.5
+    ```
 
-When using -f, the above commands are equivalent to:
-```shell
-python -m yolox.tools.train -f exps/default/yolox_s.py -d 8 -b 64 --fp16 -o [--cache]
-                               exps/default/yolox_m.py
-                               exps/default/yolox_l.py
-                               exps/default/yolox_x.py
-```
-
-**Multi Machine Training**
-
-We also support multi-nodes training. Just add the following args:
-* --num\_machines: num of your total training nodes
-* --machine\_rank: specify the rank of each node
-
-Suppose you want to train YOLOX on 2 machines, and your master machines's IP is 123.123.123.123, use port 12312 and TCP.
-
-On master machine, run
-```shell
-python tools/train.py -n yolox-s -b 128 --dist-url tcp://123.123.123.123:12312 --num_machines 2 --machine_rank 0
-```
-On the second machine, run
-```shell
-python tools/train.py -n yolox-s -b 128 --dist-url tcp://123.123.123.123:12312 --num_machines 2 --machine_rank 1
-```
-
-**Logging to Weights & Biases**
-
-To log metrics, predictions and model checkpoints to [W&B](https://docs.wandb.ai/guides/integrations/other/yolox) use the command line argument `--logger wandb` and use the prefix "wandb-" to specify arguments for initializing the wandb run.
-
-```shell
-python tools/train.py -n yolox-s -d 8 -b 64 --fp16 -o [--cache] --logger wandb wandb-project <project name>
-                         yolox-m
-                         yolox-l
-                         yolox-x
-```
-
-An example wandb dashboard is available [here](https://wandb.ai/manan-goel/yolox-nano/runs/3pzfeom0)
-
-**Others**
-
-See more information with the following command:
-```shell
-python -m yolox.tools.train --help
-```
-
-</details>
-
-
-<details>
-<summary>Evaluation</summary>
-
-We support batch testing for fast evaluation:
-
-```shell
-python -m yolox.tools.eval -n  yolox-s -c yolox_s.pth -b 64 -d 8 --conf 0.001 [--fp16] [--fuse]
-                               yolox-m
-                               yolox-l
-                               yolox-x
-```
-* --fuse: fuse conv and bn
-* -d: number of GPUs used for evaluation. DEFAULT: All GPUs available will be used.
-* -b: total batch size across on all GPUs
-
-To reproduce speed test, we use the following command:
-```shell
-python -m yolox.tools.eval -n  yolox-s -c yolox_s.pth -b 1 -d 1 --conf 0.001 --fp16 --fuse
-                               yolox-m
-                               yolox-l
-                               yolox-x
-```
-
-</details>
+4. Run the following command to evaluate an EAS-SNN model on the GEN-1 dataset:
+    ```bash
+    python eval_event.py -n e-yolox-m -d 4 -b 36 -c ./YOLOX_outputs/$exp_name/best_ckpt.pth --conf 0.001 \
+     --eval_proh  data_num_workers 4 embedding arsnn seed 80 data_name gen1 data_dir /data2/wzm/dataset/GEN1/raw/ \
+     num_classes 2 Tm 4 T 3 spike_attach True thresh 1 readout sum embedding_depth 2 embedding_ksize 5 \
+    write_zero True use_spike full_spike spike_fn atan
+     ```
+5. The hyperparameter Ts can be modified to explore the ability for temporal modelling capacity of SNNs as shown in Fig.4 in the paper.
 
 
-<details>
-<summary>Tutorials</summary>
 
-*  [Training on custom data](docs/train_custom_data.md)
-*  [Caching for custom data](docs/cache.md)
-*  [Manipulating training image size](docs/manipulate_training_image_size.md)
-*  [Assignment visualization](docs/assignment_visualization.md)
-*  [Freezing model](docs/freeze_module.md)
-
-</details>
-
-## Deployment
-
-
-1. [MegEngine in C++ and Python](./demo/MegEngine)
-2. [ONNX export and an ONNXRuntime](./demo/ONNXRuntime)
-3. [TensorRT in C++ and Python](./demo/TensorRT)
-4. [ncnn in C++ and Java](./demo/ncnn)
-5. [OpenVINO in C++ and Python](./demo/OpenVINO)
-6. [Accelerate YOLOX inference with nebullvm in Python](./demo/nebullvm)
-
-## Third-party resources
-* YOLOX for streaming perception: [StreamYOLO (CVPR 2022 Oral)](https://github.com/yancie-yjr/StreamYOLO)
-* The YOLOX-s and YOLOX-nano are Integrated into [ModelScope](https://www.modelscope.cn/home). Try out the Online Demo at [YOLOX-s](https://www.modelscope.cn/models/damo/cv_cspnet_image-object-detection_yolox/summary) and [YOLOX-Nano](https://www.modelscope.cn/models/damo/cv_cspnet_image-object-detection_yolox_nano_coco/summary) respectively 🚀.
-* Integrated into [Huggingface Spaces 🤗](https://huggingface.co/spaces) using [Gradio](https://github.com/gradio-app/gradio). Try out the Web Demo: [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/Sultannn/YOLOX-Demo)
-* The ncnn android app with video support: [ncnn-android-yolox](https://github.com/FeiGeChuanShu/ncnn-android-yolox) from [FeiGeChuanShu](https://github.com/FeiGeChuanShu)
-* YOLOX with Tengine support: [Tengine](https://github.com/OAID/Tengine/blob/tengine-lite/examples/tm_yolox.cpp) from [BUG1989](https://github.com/BUG1989)
-* YOLOX + ROS2 Foxy: [YOLOX-ROS](https://github.com/Ar-Ray-code/YOLOX-ROS) from [Ar-Ray](https://github.com/Ar-Ray-code)
-* YOLOX Deploy DeepStream: [YOLOX-deepstream](https://github.com/nanmi/YOLOX-deepstream) from [nanmi](https://github.com/nanmi)
-* YOLOX MNN/TNN/ONNXRuntime: [YOLOX-MNN](https://github.com/DefTruth/lite.ai.toolkit/blob/main/lite/mnn/cv/mnn_yolox.cpp)、[YOLOX-TNN](https://github.com/DefTruth/lite.ai.toolkit/blob/main/lite/tnn/cv/tnn_yolox.cpp) and [YOLOX-ONNXRuntime C++](https://github.com/DefTruth/lite.ai.toolkit/blob/main/lite/ort/cv/yolox.cpp) from [DefTruth](https://github.com/DefTruth)
-* Converting darknet or yolov5 datasets to COCO format for YOLOX: [YOLO2COCO](https://github.com/RapidAI/YOLO2COCO) from [Daniel](https://github.com/znsoftm)
-
-## Cite YOLOX
-If you use YOLOX in your research, please cite our work by using the following BibTeX entry:
-
-```latex
- @article{yolox2021,
-  title={YOLOX: Exceeding YOLO Series in 2021},
-  author={Ge, Zheng and Liu, Songtao and Wang, Feng and Li, Zeming and Sun, Jian},
-  journal={arXiv preprint arXiv:2107.08430},
-  year={2021}
+## Citation Info
+If you find this work helpful, please consider citing our paper:
+```bibtex
+@article{wang2024eas,
+  title={EAS-SNN: End-to-End Adaptive Sampling and Representation for Event-based Detection with Recurrent Spiking Neural Networks},
+  author={Wang, Ziming and Wang, Ziling and Li, Huaning and Qin, Lang and Jiang, Runhao and Ma, De and Tang, Huajin},
+  journal={arXiv preprint arXiv:2403.12574},
+  year={2024}
 }
 ```
-## In memory of Dr. Jian Sun
-Without the guidance of [Dr. Jian Sun](http://www.jiansun.org/), YOLOX would not have been released and open sourced to the community.
-The passing away of Dr. Jian is a huge loss to the Computer Vision field. We add this section here to express our remembrance and condolences to our captain Dr. Jian.
-It is hoped that every AI practitioner in the world will stick to the concept of "continuous innovation to expand cognitive boundaries, and extraordinary technology to achieve product value" and move forward all the way.
 
-<div align="center"><img src="assets/sunjian.png" width="200"></div>
-没有孙剑博士的指导，YOLOX也不会问世并开源给社区使用。
-孙剑博士的离去是CV领域的一大损失，我们在此特别添加了这个部分来表达对我们的“船长”孙老师的纪念和哀思。
-希望世界上的每个AI从业者秉持着“持续创新拓展认知边界，非凡科技成就产品价值”的观念，一路向前。
+## Acknowledgement
+This project has adpated code from the following libraries:
+* [YOLOX](https://github.com/Megvii-BaseDetection/YOLOX) for the detection PAFPN/head
+* [Tonic](https://github.com/neuromorphs/tonic) for the event-based representation, like voxel grid
+* [RVT](https://github.com/uzh-rpg/RVT/tree/master) for the 1Mpx preprocessed dataset and the Prophesee evaluation tool
+* [ASGL](https://github.com/Windere/ASGL-SNN) and [SpikingJelly](https://github.com/fangwei123456/spikingjelly) for the SNN implementation and event visualization
+
+
