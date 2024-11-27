@@ -6,6 +6,9 @@ import argparse
 import os
 import random
 import warnings
+import sys
+sys.path.append('..')
+sys.path.append('../..')
 from loguru import logger
 
 import torch
@@ -22,6 +25,7 @@ from yolox.utils import (
     get_model_info,
     setup_logger
 )
+
 
 
 def make_parser():

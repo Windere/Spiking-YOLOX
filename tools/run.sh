@@ -1,0 +1,1 @@
+--exp_file ../exps/example/yolox_voc/spiking_yolox_voc_l.py -d 8 -b 30 --fp16 basic_lr_per_img 0.00033333

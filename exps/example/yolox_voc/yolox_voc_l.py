@@ -5,6 +5,7 @@ from yolox.data import get_yolox_datadir
 from yolox.exp import Exp as MyExp
 
 
+
 class Exp(MyExp):
     def __init__(self):
         super(Exp, self).__init__()
@@ -58,3 +59,5 @@ class Exp(MyExp):
             nmsthre=self.nmsthre,
             num_classes=self.num_classes,
         )
+
+
